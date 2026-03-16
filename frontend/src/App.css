@@ -1,0 +1,486 @@
+/* --- Global Theme & Variables --- */
+:root {
+  --primary: #6366f1;       /* Indigo Accent */
+  --primary-glow: rgba(99, 102, 241, 0.4);
+  --bg: #0f172a;            /* Deep Midnight */
+  --card-bg: rgba(30, 41, 59, 0.7);
+  --text-main: #f8fafc;
+  --text-dim: #94a3b8;
+  --success: #10b981;
+  --accent-dark: #4338ca;
+  --danger: #f43f5e;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: radial-gradient(circle at top right, #1e1b4b, var(--bg));
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+
+.app-container {
+  width: 100%;
+  max-width: 650px;
+  margin: 60px 20px;
+}
+
+/* --- 1. The Scanner Preloader --- */
+/* --- Amazing Neural Preloader --- */
+/* --- Full Screen Center Overlay --- */
+.neural-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* --- Increased Size Orbit --- */
+.orbit-master {
+  position: relative;
+  width: 200px; /* Increased size */
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.orbit-core {
+  width: 30px;
+  height: 30px;
+  background: white;
+  border-radius: 50%;
+  z-index: 10;
+  box-shadow: 0 0 30px var(--primary), 0 0 60px var(--primary);
+  position: relative;
+}
+
+.core-glow {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--primary);
+  filter: blur(15px);
+  animation: corePulse 2s infinite alternate;
+}
+
+/* --- Massive Animated Rings --- */
+.orbit-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  transition: var(--transition);
+}
+
+.ring-1 {
+  width: 100%;
+  height: 100%;
+  border-top: 3px solid var(--primary);
+  animation: orbitRotate 2s linear infinite;
+}
+
+.ring-2 {
+  width: 75%;
+  height: 75%;
+  border-right: 3px solid #a855f7; /* Purple */
+  animation: orbitRotate 1.5s linear infinite reverse;
+}
+
+.ring-3 {
+  width: 50%;
+  height: 50%;
+  border-bottom: 3px solid var(--success); /* Emerald */
+  animation: orbitRotate 1s linear infinite;
+}
+
+/* --- Text & Status Bar below the Orbit --- */
+.loading-status {
+  position: absolute;
+  top: 240px; /* Positioned below the rings */
+  text-align: center;
+  width: 300px;
+}
+
+.loading-status h3 {
+  font-size: 14px;
+  letter-spacing: 6px;
+  color: var(--text-main);
+  margin-bottom: 15px;
+  text-shadow: 0 0 10px var(--primary);
+}
+
+.status-bar {
+  width: 100px;
+  height: 2px;
+  background: rgba(255,255,255,0.1);
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.status-bar::after {
+  content: '';
+  position: absolute;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--primary);
+  animation: loadingSlide 2s infinite;
+}
+
+/* --- Animations --- */
+@keyframes orbitRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes corePulse {
+  from { transform: scale(0.8); opacity: 0.5; }
+  to { transform: scale(1.2); opacity: 1; }
+}
+
+@keyframes loadingSlide {
+  100% { left: 100%; }
+}
+/* --- Generation Pulse Animation --- */
+.generation-card {
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.pulse-container {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pulse-icon {
+  font-size: 40px;
+  z-index: 5;
+  filter: drop-shadow(0 0 10px var(--primary));
+}
+
+.pulse-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 3px solid var(--primary);
+  border-radius: 50%;
+  opacity: 0;
+  animation: rippleEffect 2s infinite;
+}
+
+.pulse-ring:nth-child(2) {
+  animation-delay: 0.8s;
+}
+
+@keyframes rippleEffect {
+  0% { transform: scale(0.5); opacity: 0; }
+  50% { opacity: 0.5; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+.gen-text {
+  letter-spacing: 5px;
+  font-weight: 900;
+  color: white;
+  margin: 0;
+}
+
+.gen-subtext {
+  color: var(--text-dim);
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.gen-status-wrapper {
+  width: 150px;
+  height: 2px;
+  background: rgba(255,255,255,0.1);
+  margin-top: 30px;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.gen-status-bar {
+  width: 100%;
+  height: 100%;
+  background: var(--primary);
+  animation: loadingSlide 2.5s infinite;
+}
+/* --- 2. Reusable Card & Animations --- */
+.card {
+  background: var(--card-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 45px;
+  border-radius: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+
+.animate-fade-in {
+  animation: slideUpFade 1.7s ease-out forwards;
+}
+
+@keyframes slideUpFade {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- 3. Home Page Styling --- */
+.home-header { margin-bottom: 40px; }
+.home-header h1 {
+  font-size: 3rem;
+  font-weight: 900;
+  margin: 0;
+  background: linear-gradient(to bottom right, #ffffff, #64748b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.form-group { margin-bottom: 25px; text-align: left; }
+.input-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+  padding-left: 5px;
+}
+
+.input-wrapper { position: relative; display: flex; align-items: center; }
+.input-icon { position: absolute; left: 18px; font-size: 18px; }
+
+.main-input, select {
+  width: 100%;
+  padding: 16px 16px 16px 54px;
+  background: rgba(15, 23, 42, 0.6) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 16px !important;
+  color: white !important;
+  font-size: 16px;
+  transition: var(--transition);
+  box-sizing: border-box;
+}
+
+select { padding-left: 18px; cursor: pointer; }
+
+.main-input:focus, select:focus {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 20px var(--primary-glow);
+  outline: none;
+  transform: translateY(-2px);
+}
+
+.config-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  border-radius: 20px;
+  margin: 30px 0;
+}
+
+/* --- 4. Quiz Page Logic (MCQ, MSQ, Short, T/F) --- */
+.timer-container {
+  width: 100%;
+  height: 6px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 10px;
+  margin-bottom: 30px;
+  overflow: hidden;
+}
+
+.timer-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), #a855f7);
+  box-shadow: 0 0 15px var(--primary-glow);
+  transition: width 1s linear;
+}
+
+.quiz-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.type-badge {
+  background: var(--primary-glow);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 800;
+  border: 1px solid var(--primary);
+}
+
+.option-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.btn-option {
+  width: 100%;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  color: var(--text-main);
+  text-align: left;
+  font-size: 16px;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+}
+
+.btn-option:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateX(5px);
+}
+
+.btn-option.selected {
+  border-color: var(--primary);
+  background: rgba(99, 102, 241, 0.15);
+  box-shadow: 0 0 15px var(--primary-glow);
+}
+
+.btn-option.correct {
+  background: rgba(16, 185, 129, 0.2) !important;
+  border-color: var(--success) !important;
+  color: var(--success) !important;
+  font-weight: bold;
+}
+
+.btn-option.wrong {
+  background: rgba(244, 63, 94, 0.2) !important;
+  border-color: var(--danger) !important;
+  color: var(--danger) !important;
+}
+
+/* Short Answer Input */
+.short-answer-container input {
+  padding-left: 20px !important;
+}
+
+/* --- 5. Result Page (Attractive Dashboard) --- */
+/* Result Page Emoji & Layout */
+.badge-icon {
+  display: block;
+  font-size: 80px;      /* Increased size */
+  margin: 0 auto 20px; /* Centered with auto margins */
+  text-align: center;
+  filter: drop-shadow(0 0 15px var(--primary-glow));
+  animation: bounceSlow 3s infinite ease-in-out;
+}
+
+.result-card h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+.score-circle {
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.1), transparent);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-top: 4px solid var(--primary);
+  border-radius: 50%;
+  margin: 30px auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  animation: circleReveal 1.2s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+}
+
+@keyframes circleReveal {
+  from { transform: scale(0.5) rotate(-180deg); opacity: 0; }
+  to { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.big-score {
+  font-size: 64px;
+  font-weight: 900;
+  color: white;
+  text-shadow: 0 0 20px var(--primary-glow);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 40px;
+}
+
+/* --- Buttons --- */
+.btn-primary {
+  width: 100%;
+  padding: 15px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 15px;
+  font-weight: 800;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 10px 20px -5px var(--primary-glow);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--accent-dark);
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px -5px var(--primary-glow);
+}
+
+.btn-download {
+  flex: 1;
+  padding: 16px;
+  background: rgba(16, 185, 129, 0.1); /* Subtle green tint */
+  color: var(--success);
+  border: 1.5px dashed var(--success); /* Professional 'document' feel */
+  border-radius: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-download:hover {
+  background: var(--success);
+  color: white;
+  transform: translateY(-2px);
+}
