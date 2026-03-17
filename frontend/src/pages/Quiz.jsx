@@ -18,6 +18,7 @@ const Quiz = () => {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [userInput, setUserInput] = useState('');
   const [isRevealed, setIsRevealed] = useState(false);
+  const [reportData, setReportData] = useState([]); // For PDF Report
 
   const fetchQuiz = useCallback(async () => {
     try {
@@ -40,6 +41,7 @@ const Quiz = () => {
     const current = questions[index];
     let isCorrect = false;
 
+    // Validation Logic
     if (type === 'mcq' || type === 'boolean') {
       isCorrect = selectedOptions[0] === current.correctAnswer;
     } else if (type === 'msq') {
@@ -49,6 +51,16 @@ const Quiz = () => {
     } else if (type === 'short') {
       isCorrect = userInput.trim().toLowerCase() === current.correctAnswer.toLowerCase();
     }
+
+    // Capture Data for Report
+    const entry = {
+      question: current.question,
+      userAnswer: type === 'short' ? userInput : selectedOptions,
+      correctAnswer: current.correctAnswer,
+      isCorrect: isCorrect
+    };
+    const updatedHistory = [...reportData, entry];
+    setReportData(updatedHistory);
 
     if (isCorrect) setScore(s => s + 1);
 
@@ -60,10 +72,16 @@ const Quiz = () => {
         setIsRevealed(false);
         setTimeLeft(15);
       } else {
-        navigate('/result', { state: { score: isCorrect ? score + 1 : score, total: questions.length } });
+        navigate('/result', { 
+          state: { 
+            score: isCorrect ? score + 1 : score, 
+            total: questions.length,
+            reportData: updatedHistory 
+          } 
+        });
       }
     }, 2000);
-  }, [questions, index, score, selectedOptions, userInput, type, isRevealed, navigate]);
+  }, [questions, index, score, selectedOptions, userInput, type, isRevealed, navigate, reportData]);
 
   useEffect(() => {
     if (!loading && questions.length > 0 && !isRevealed) {
@@ -88,24 +106,23 @@ const Quiz = () => {
       setSelectedOptions(prev => prev.includes(opt) ? prev.filter(i => i !== opt) : [...prev, opt]);
     }
   };
-if (loading) {
-  return (
-    <div className="card generation-card animate-fade-in">
-      <div className="pulse-container">
-        <div className="pulse-ring"></div>
-        <div className="pulse-ring"></div>
-        <div className="pulse-icon">⚡</div>
+
+  if (loading) {
+    return (
+      <div className="card generation-card animate-fade-in">
+        <div className="pulse-container">
+          <div className="pulse-ring"></div>
+          <div className="pulse-ring"></div>
+          <div className="pulse-icon">⚡</div>
+        </div>
+        <h2 className="gen-text">GENERATING QUIZ...</h2>
+        <p className="gen-subtext">Our AI is synthesizing questions for you...</p>
+        <div className="gen-status-wrapper">
+          <div className="gen-status-bar"></div>
+        </div>
       </div>
-      <h2 className="gen-text">GENERATING QUIZ...</h2>
-      <p className="gen-subtext">Our AI is synthesizing questions for you...</p>
-      
-      {/* Decorative status bar for extra "interest" */}
-      <div className="gen-status-wrapper">
-        <div className="gen-status-bar"></div>
-      </div>
-    </div>
-  );
-}
+    );
+  }
 
   const q = questions[index];
 
@@ -117,6 +134,7 @@ if (loading) {
 
       <div className="quiz-header">
         <span>Question {index + 1}/{questions.length}</span>
+        <span className={timeLeft < 5 ? 'timer-low' : ''}>Time: {timeLeft}s</span>
         <span className="type-badge">{type.toUpperCase()}</span>
       </div>
       
@@ -132,7 +150,7 @@ if (loading) {
             }
             return (
               <button key={i} className={`btn-option ${selectedOptions.includes(opt) ? 'selected' : ''} ${status}`} onClick={() => toggleOption(opt)} disabled={isRevealed}>
-                {type === 'msq' && <input type="checkbox" checked={selectedOptions.includes(opt)} readOnly />}
+                {type === 'msq' && <input type="checkbox" checked={selectedOptions.includes(opt)} readOnly style={{marginRight: '10px'}} />}
                 {opt}
               </button>
             );

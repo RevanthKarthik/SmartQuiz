@@ -36,7 +36,7 @@ const Home = () => {
   return (
     <div className="home-wrapper animate-fade-in">
       <div className="home-header">
-        <h1>SmartQuiz AI</h1>
+        <h1>AI QuizMind </h1>
       </div>
 
       <div className="card main-card">
