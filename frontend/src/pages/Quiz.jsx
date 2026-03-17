@@ -22,7 +22,7 @@ const Quiz = () => {
   const fetchQuiz = useCallback(async () => {
     try {
       setLoading(true);
-      const res = await axios.post('http://localhost:5000/api/quizzes/generate', { topic, level, count, type });
+      const res = await axios.post('https://smartquiz-jz6y.onrender.com/api/quizzes/generate', { topic, level, count, type });
       setQuestions(res.data);
     } catch (err) {
       navigate('/');
